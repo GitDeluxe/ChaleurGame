@@ -1,0 +1,14 @@
+REGLE DU JEU 
+
+CHALEUR ! 
+
+1 Le joueur se retrouve sur un ecran blanc sur lequel il y a un point invisible . 
+2 le joueur doit cliquer sur l'ecran pour recevoir l'information lié a la distance au point secret via un code coulauer allant du bleu (loin) au rouge (proche)
+3 le joueur dispose d'une limite de temps qu'il peut alimenter en trouvant les point cachés 
+4 En trouvant un pointr le joueur passe au niveau superieur 
+5 a partir du niveau 10 le joueur possede un nombre restraint de clicks .
+6 plus le niveau est elevé plus la surface de la zone a trouver est petite 
+... to be continued ...
+
+
+Indiquer les lieux cliqué 

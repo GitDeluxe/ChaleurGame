@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<style>
+body{
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Quicksand', sans-serif;
+}
+.go{
+    width: 100%;
+    text-align: center;
+}
+</style>
+<body>
+    <div class="go">/!\ CHALEUR niveau : <span id="level"></span> /!\</div>
+</body>
+<script>
+    window.onload = initGame;
+    const height = document.body.clientHeight;
+    const width = document.body.clientWidth;
+    const id = "findMe";
+    let mouseX = null;
+    let mouseY = null;
+    let level = 0;
+    let longueur = 300;
+    let distance = null;
+    let maxDistance = null;
+
+function getMaxDistance(){
+    return Math.floor(Math.sqrt(
+        Math.pow(width, 2) + Math.pow(height, 2)));
+}
+function initGame(){
+    let shape  = initShape()
+    maxDistance = getMaxDistance()
+    initLevel()
+    initEventMouse(shape);
+}
+function initLevel(){
+    document.getElementById("level").innerHTML = level
+}
+function initEventMouse(shape){
+    document.body.addEventListener('click',(e)=>{
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+        
+        distance = calculateDistance(shape,mouseX,mouseY);
+        console.log(distance + " pixels du carré mystere");
+        console.log(Math.floor((distance/maxDistance)*100))
+        document.body.style.backgroundColor = getColorByDistance()
+    })
+    document.body.addEventListener('contextmenu' , (e)=>{
+        console.log(e)
+        insertMarker(createMarker(e))
+    })
+}
+function initShape(){
+    console.log("Level : "+level);  
+    const shape = createShape(longueur-(level*level))
+    insertShape(shape);
+    return shape;
+}
+function initEventShape(shape){ 
+    shape.addEventListener('click',(e)=>{
+    
+        shapeFinded();
+        revealShape();
+        setTimeout(() => {
+            removeShape()
+        }, 3000);
+        initEventMouse(initShape());
+    })
+}
+function shapeFinded(){
+    console.log("finded!!")
+    level++
+    document.getElementById("level").innerHTML = level
+}
+function getColorByDistance(){
+   const blue =  Math.floor((distance/maxDistance)*255)
+   const red = 255 - blue;
+   return "rgb("+red+",0,"+blue+",0.8)"
+}
+function getRandomInt(max) { return Math.floor(Math.random() * Math.floor(max)); }
+function px(any){ return any+"px"}
+function createShape(longueur){
+    let div  = document.createElement('div');
+    div.style.height = px(longueur);
+    div.style.width = px(longueur);
+    div.style.position = "absolute";
+    div.style.top = px(getRandomInt(height));
+    div.style.left = px(getRandomInt(width));
+    div.id = id;
+    return div;
+} 
+function createMarker(clickEvent){
+    clickEvent.preventDefault()
+    let marker  = document.createElement('div');
+    marker.style.height = px(10);
+    marker.style.width = px(10);
+    marker.style.position = "absolute";
+    marker.style.top = px(clickEvent.pageY);
+    marker.style.left = px(clickEvent.pageX);
+    marker.style.backgroundColor = "black";
+    marker.id = id;
+    return marker;
+} 
+function insertShape(shape){
+    document.body.appendChild(shape);
+    initEventShape(shape)
+}
+function insertMarker(marker){
+    document.body.appendChild(marker)
+}
+function revealShape(){document.getElementById(id).style.backgroundColor = "wheat"}
+function removeShape(){document.getElementById(id).remove()}
+function getShape(){return document.getElementById(id)}
+function moveShape(){
+    let shape =  document.getElementById(id) ; 
+    shape.style.top = px(getRandomInt(height));
+    shape.style.left = px(getRandomInt(width));
+}
+function calculateDistance(elem, mouseX, mouseY) {
+    return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offsetLeft+(elem.offsetWidth/2)), 2) + Math.pow(mouseY - (elem.offsetTop+(elem.offsetHeight/2)), 2)));
+}
+function letPlaceMarkOnClick(clickEvent){
+
+}
+
+</script>
+</html>
